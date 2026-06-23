@@ -1,26 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo App</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #667eea;
+        }
+
+        button {
+            padding: 12px 18px;
+            border: none;
+            background: #667eea;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #5563d6;
+            transform: translateY(-2px);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            background: #f5f7ff;
+            padding: 14px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.3s;
+        }
+
+        li:hover {
+            transform: translateX(5px);
+            background: #eef1ff;
+        }
+
+        .empty {
+            text-align: center;
+            color: #888;
+            padding: 20px;
+        }
+
+        .task-number {
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
 
-    <h1>My Todo List</h1>
+    <div class="container">
 
-    <form action="/add" method="POST">
-        <input
-            type="text"
-            name="task"
-            placeholder="Enter task"
-            required>
-        <button type="submit">Add Task</button>
-    </form>
+        <h1>📝 My Todo List</h1>
 
-    <ul>
-        <% todos.forEach(function(todo){ %>
-            <li><%= todo %></li>
-        <% }) %>
-    </ul>
+        <form action="/add" method="POST">
+            <input
+                type="text"
+                name="task"
+                placeholder="Enter a new task..."
+                required>
+            <button type="submit">➕ Add</button>
+        </form>
+
+        <% if(todos.length === 0) { %>
+            <div class="empty">
+                No tasks added yet 🚀
+            </div>
+        <% } %>
+
+        <ul>
+            <% todos.forEach(function(todo, index){ %>
+                <li>
+                    <span>
+                        <span class="task-number">
+                            #<%= index + 1 %>
+                        </span>
+                        <%= todo %>
+                    </span>
+                </li>
+            <% }) %>
+        </ul>
+
+    </div>
 
 </body>
 </html>
