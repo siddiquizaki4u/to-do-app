@@ -23,25 +23,18 @@ body{
     justify-content:center;
     align-items:center;
     padding:20px;
-
-    background:
-    linear-gradient(135deg,#667eea 0%,#764ba2 50%,#6b46c1 100%);
+    background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#6b46c1 100%);
 }
 
 .container{
     width:100%;
-    max-width:650px;
-
-    backdrop-filter: blur(20px);
+    max-width:700px;
+    backdrop-filter:blur(20px);
     background:rgba(255,255,255,0.12);
-
     border:1px solid rgba(255,255,255,0.2);
-
     border-radius:30px;
     padding:35px;
-
-    box-shadow:
-    0 8px 32px rgba(0,0,0,0.25);
+    box-shadow:0 8px 32px rgba(0,0,0,0.25);
 }
 
 .header{
@@ -51,8 +44,7 @@ body{
 
 .header h1{
     color:#fff;
-    font-size:2.3rem;
-    font-weight:700;
+    font-size:2.2rem;
 }
 
 .header p{
@@ -62,13 +54,12 @@ body{
 
 .stats{
     display:flex;
-    justify-content:space-between;
+    gap:10px;
     margin-bottom:25px;
 }
 
 .card{
     flex:1;
-    margin:0 5px;
     background:rgba(255,255,255,0.15);
     padding:15px;
     border-radius:15px;
@@ -77,7 +68,7 @@ body{
 }
 
 .card h3{
-    font-size:22px;
+    font-size:24px;
 }
 
 .todo-form{
@@ -92,7 +83,6 @@ body{
     border:none;
     border-radius:15px;
     outline:none;
-    font-size:15px;
 }
 
 .todo-form button{
@@ -100,12 +90,9 @@ body{
     padding:14px 24px;
     border-radius:15px;
     cursor:pointer;
-
-    background:#fff;
+    background:white;
     color:#6b46c1;
-
     font-weight:600;
-
     transition:.3s;
 }
 
@@ -114,35 +101,23 @@ body{
 }
 
 .todo-list{
-    max-height:420px;
+    max-height:450px;
     overflow-y:auto;
-}
-
-.todo-list::-webkit-scrollbar{
-    width:6px;
-}
-
-.todo-list::-webkit-scrollbar-thumb{
-    background:white;
-    border-radius:20px;
 }
 
 .todo-item{
     background:white;
     border-radius:18px;
-    padding:16px 18px;
+    padding:16px;
     margin-bottom:12px;
-
     display:flex;
-    align-items:center;
     justify-content:space-between;
-
-    animation:slideUp .3s ease;
+    align-items:center;
     transition:.3s;
 }
 
 .todo-item:hover{
-    transform:translateY(-3px);
+    transform:translateY(-2px);
 }
 
 .todo-left{
@@ -151,68 +126,74 @@ body{
     gap:12px;
 }
 
+.todo-checkbox{
+    width:22px;
+    height:22px;
+    cursor:pointer;
+}
+
 .todo-number{
     width:32px;
     height:32px;
     border-radius:50%;
     background:#667eea;
     color:white;
-
     display:flex;
-    justify-content:center;
     align-items:center;
-
+    justify-content:center;
     font-size:14px;
     font-weight:600;
 }
 
 .todo-text{
-    color:#333;
     font-weight:500;
+    color:#333;
+}
+
+.completed{
+    text-decoration:line-through;
+    color:#888;
+    opacity:.7;
 }
 
 .status{
-    color:#10b981;
     font-size:14px;
     font-weight:600;
+}
+
+.pending{
+    color:#f59e0b;
+}
+
+.done{
+    color:#10b981;
 }
 
 .empty{
     text-align:center;
     color:white;
-    padding:40px 20px;
-}
-
-.empty h2{
-    margin-bottom:10px;
+    padding:40px;
 }
 
 .footer{
-    margin-top:25px;
+    margin-top:20px;
     text-align:center;
     color:rgba(255,255,255,.8);
-    font-size:14px;
-}
-
-@keyframes slideUp{
-    from{
-        opacity:0;
-        transform:translateY(20px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
 }
 
 @media(max-width:600px){
+
+    .stats{
+        flex-direction:column;
+    }
 
     .todo-form{
         flex-direction:column;
     }
 
-    .stats{
+    .todo-item{
         flex-direction:column;
+        align-items:flex-start;
         gap:10px;
     }
 }
@@ -224,20 +205,27 @@ body{
 <div class="container">
 
     <div class="header">
-        <h1>🚀 Smart Todo Bhai ne bola karne ka to matlab karne ka</h1>
+        <h1>🚀 Smart Todo App</h1>
         <p>Stay organized. Stay productive.</p>
     </div>
 
     <div class="stats">
+
         <div class="card">
             <h3><%= todos.length %></h3>
             <p>Total Tasks</p>
         </div>
 
         <div class="card">
-            <h3>⚡</h3>
-            <p>Today's Goals</p>
+            <h3><%= todos.filter(t => t.completed).length %></h3>
+            <p>Completed</p>
         </div>
+
+        <div class="card">
+            <h3><%= todos.filter(t => !t.completed).length %></h3>
+            <p>Pending</p>
+        </div>
+
     </div>
 
     <form class="todo-form" action="/add" method="POST">
@@ -269,18 +257,31 @@ body{
 
                 <div class="todo-left">
 
+                    <form action="/toggle/<%= index %>" method="POST">
+
+                        <input
+                            class="todo-checkbox"
+                            type="checkbox"
+                            onchange="this.form.submit()"
+                            <%= todo.completed ? 'checked' : '' %>
+                        >
+
+                    </form>
+
                     <div class="todo-number">
                         <%= index + 1 %>
                     </div>
 
-                    <div class="todo-text">
-                        <%= todo %>
+                    <div class="todo-text <%= todo.completed ? 'completed' : '' %>">
+                        <%= todo.text %>
                     </div>
 
                 </div>
 
-                <div class="status">
-                    Pending
+                <div class="status <%= todo.completed ? 'done' : 'pending' %>">
+
+                    <%= todo.completed ? '✅ Completed' : '⏳ Pending' %>
+
                 </div>
 
             </div>
@@ -290,7 +291,7 @@ body{
     </div>
 
     <div class="footer">
-        Made with ❤️ JOEY AND CHANDLER
+        Made with ❤️ by Joey & Chandler
     </div>
 
 </div>
