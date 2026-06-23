@@ -1,146 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo App</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Todo App</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", sans-serif;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        body {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+<style>
 
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background: #fff;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
-        h1 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #333;
-        }
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
 
-        form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-        }
+    background:
+    linear-gradient(135deg,#667eea 0%,#764ba2 50%,#6b46c1 100%);
+}
 
-        input[type="text"] {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            outline: none;
-            transition: 0.3s;
-        }
+.container{
+    width:100%;
+    max-width:650px;
 
-        input[type="text"]:focus {
-            border-color: #667eea;
-        }
+    backdrop-filter: blur(20px);
+    background:rgba(255,255,255,0.12);
 
-        button {
-            padding: 12px 18px;
-            border: none;
-            background: #667eea;
-            color: white;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: bold;
-        }
+    border:1px solid rgba(255,255,255,0.2);
 
-        button:hover {
-            background: #5563d6;
-            transform: translateY(-2px);
-        }
+    border-radius:30px;
+    padding:35px;
 
-        ul {
-            list-style: none;
-        }
+    box-shadow:
+    0 8px 32px rgba(0,0,0,0.25);
+}
 
-        li {
-            background: #f5f7ff;
-            padding: 14px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            border-left: 5px solid #667eea;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: 0.3s;
-        }
+.header{
+    text-align:center;
+    margin-bottom:25px;
+}
 
-        li:hover {
-            transform: translateX(5px);
-            background: #eef1ff;
-        }
+.header h1{
+    color:#fff;
+    font-size:2.3rem;
+    font-weight:700;
+}
 
-        .empty {
-            text-align: center;
-            color: #888;
-            padding: 20px;
-        }
+.header p{
+    color:rgba(255,255,255,.8);
+    margin-top:8px;
+}
 
-        .task-number {
-            color: #667eea;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-    </style>
+.stats{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:25px;
+}
+
+.card{
+    flex:1;
+    margin:0 5px;
+    background:rgba(255,255,255,0.15);
+    padding:15px;
+    border-radius:15px;
+    text-align:center;
+    color:white;
+}
+
+.card h3{
+    font-size:22px;
+}
+
+.todo-form{
+    display:flex;
+    gap:12px;
+    margin-bottom:25px;
+}
+
+.todo-form input{
+    flex:1;
+    padding:14px 18px;
+    border:none;
+    border-radius:15px;
+    outline:none;
+    font-size:15px;
+}
+
+.todo-form button{
+    border:none;
+    padding:14px 24px;
+    border-radius:15px;
+    cursor:pointer;
+
+    background:#fff;
+    color:#6b46c1;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.todo-form button:hover{
+    transform:translateY(-3px);
+}
+
+.todo-list{
+    max-height:420px;
+    overflow-y:auto;
+}
+
+.todo-list::-webkit-scrollbar{
+    width:6px;
+}
+
+.todo-list::-webkit-scrollbar-thumb{
+    background:white;
+    border-radius:20px;
+}
+
+.todo-item{
+    background:white;
+    border-radius:18px;
+    padding:16px 18px;
+    margin-bottom:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    animation:slideUp .3s ease;
+    transition:.3s;
+}
+
+.todo-item:hover{
+    transform:translateY(-3px);
+}
+
+.todo-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.todo-number{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#667eea;
+    color:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:14px;
+    font-weight:600;
+}
+
+.todo-text{
+    color:#333;
+    font-weight:500;
+}
+
+.status{
+    color:#10b981;
+    font-size:14px;
+    font-weight:600;
+}
+
+.empty{
+    text-align:center;
+    color:white;
+    padding:40px 20px;
+}
+
+.empty h2{
+    margin-bottom:10px;
+}
+
+.footer{
+    margin-top:25px;
+    text-align:center;
+    color:rgba(255,255,255,.8);
+    font-size:14px;
+}
+
+@keyframes slideUp{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@media(max-width:600px){
+
+    .todo-form{
+        flex-direction:column;
+    }
+
+    .stats{
+        flex-direction:column;
+        gap:10px;
+    }
+}
+
+</style>
 </head>
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>📝 My Todo List</h1>
+    <div class="header">
+        <h1>🚀 Smart Todo</h1>
+        <p>Stay organized. Stay productive.</p>
+    </div>
 
-        <form action="/add" method="POST">
-            <input
-                type="text"
-                name="task"
-                placeholder="Enter a new task..."
-                required>
-            <button type="submit">➕ Add</button>
-        </form>
+    <div class="stats">
+        <div class="card">
+            <h3><%= todos.length %></h3>
+            <p>Total Tasks</p>
+        </div>
 
-        <% if(todos.length === 0) { %>
-            <div class="empty">
-                No tasks added yet 🚀
-            </div>
-        <% } %>
+        <div class="card">
+            <h3>⚡</h3>
+            <p>Today's Goals</p>
+        </div>
+    </div>
 
-        <ul>
-            <% todos.forEach(function(todo, index){ %>
-                <li>
-                    <span>
-                        <span class="task-number">
-                            #<%= index + 1 %>
-                        </span>
+    <form class="todo-form" action="/add" method="POST">
+        <input
+            type="text"
+            name="task"
+            placeholder="What needs to be done today?"
+            required>
+
+        <button type="submit">
+            ➕ Add Task
+        </button>
+    </form>
+
+    <% if(todos.length === 0){ %>
+
+        <div class="empty">
+            <h2>📭 No Tasks Yet</h2>
+            <p>Add your first task and start being productive.</p>
+        </div>
+
+    <% } %>
+
+    <div class="todo-list">
+
+        <% todos.forEach(function(todo,index){ %>
+
+            <div class="todo-item">
+
+                <div class="todo-left">
+
+                    <div class="todo-number">
+                        <%= index + 1 %>
+                    </div>
+
+                    <div class="todo-text">
                         <%= todo %>
-                    </span>
-                </li>
-            <% }) %>
-        </ul>
+                    </div>
+
+                </div>
+
+                <div class="status">
+                    Pending
+                </div>
+
+            </div>
+
+        <% }) %>
 
     </div>
+
+    <div class="footer">
+        Made with ❤️ using Node.js + Express + EJS
+    </div>
+
+</div>
 
 </body>
 </html>
