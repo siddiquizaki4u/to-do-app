@@ -1,0 +1,68 @@
+pipeline {
+    agent { label "zaki"}
+
+   
+ environment {
+        
+        CONTAINER_NAME = "todo-container"
+    }
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'siddiquizaki4u-alpha',
+                    url: 'https://github.com/siddiquizaki4u/to-do-app.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t todo-app .'
+            }
+        }
+        stage(' Docker Image push') {
+steps { echo "images is being pushed"
+    
+      withCredentials([
+                    usernamePassword(
+                        credentialsId: 'zaki4u',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )
+                ]) {
+
+                    sh '''
+            echo "$DOCKER_PASS" |docker login -u "$DOCKER_USER" --password-stdin
+            docker image tag todo-app:latest zaki4u/todo-app:latest
+                        docker push zaki4u/todo-app:latest
+                    '''
+                }
+ }
+}
+
+
+        stage('Stop Old Container') {
+            steps {
+                sh '''
+                    docker stop $CONTAINER_NAME || true
+                    docker rm $CONTAINER_NAME || true
+                '''
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                sh '''
+                    docker run -d \
+                    --name $CONTAINER_NAME \
+                    -p 3001:3000 \
+                    todo-app
+                '''
+            }
+        }
+    }
+
+    
+        
+    
+}
