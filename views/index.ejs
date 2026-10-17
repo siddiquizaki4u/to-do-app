@@ -1,267 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo App</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Todo App</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --bg: #140a26;
-            --glass: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(255, 255, 255, 0.14);
-            --text: #f6f1ff;
-            --muted: #a99ccc;
-            --violet: #8b5cf6;
-            --pink: #ff4fa3;
-            --grad: linear-gradient(135deg, #8b5cf6, #ff4fa3);
-        }
+<style>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Outfit", "Segoe UI", sans-serif;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
-        body {
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
-            position: relative;
-            overflow-x: hidden;
-        }
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#6b46c1 100%);
+}
 
-        /* soft glowing blobs behind the card */
-        body::before,
-        body::after {
-            content: "";
-            position: fixed;
-            width: 420px;
-            height: 420px;
-            border-radius: 50%;
-            filter: blur(110px);
-            opacity: 0.55;
-            z-index: 0;
-            animation: drift 14s ease-in-out infinite alternate;
-        }
+.container{
+    width:100%;
+    max-width:700px;
+    backdrop-filter:blur(20px);
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:30px;
+    padding:35px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.25);
+}
 
-        body::before {
-            background: var(--violet);
-            top: -120px;
-            left: -100px;
-        }
+.header{
+    text-align:center;
+    margin-bottom:25px;
+}
 
-        body::after {
-            background: var(--pink);
-            bottom: -140px;
-            right: -100px;
-            animation-delay: -7s;
-        }
+.header h1{
+    color:#fff;
+    font-size:2.2rem;
+}
 
-        @keyframes drift {
-            to { transform: translate(60px, 40px) scale(1.15); }
-        }
+.header p{
+    color:rgba(255,255,255,.8);
+    margin-top:8px;
+}
 
-        .container {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 520px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            padding: 36px 32px;
-            border-radius: 28px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
-        }
+.stats{
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
+}
 
-        h1 {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 28px;
-            background: var(--grad);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+.card{
+    flex:1;
+    background:rgba(255,255,255,0.15);
+    padding:15px;
+    border-radius:15px;
+    text-align:center;
+    color:white;
+}
 
-        form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 28px;
-        }
+.card h3{
+    font-size:24px;
+}
 
-        input[type="text"] {
-            flex: 1;
-            min-width: 0;
-            padding: 14px 18px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--glass-border);
-            border-radius: 14px;
-            color: var(--text);
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.25s, box-shadow 0.25s;
-        }
+.todo-form{
+    display:flex;
+    gap:12px;
+    margin-bottom:25px;
+}
 
-        input[type="text"]::placeholder {
-            color: var(--muted);
-        }
+.todo-form input{
+    flex:1;
+    padding:14px 18px;
+    border:none;
+    border-radius:15px;
+    outline:none;
+}
 
-        input[type="text"]:focus {
-            border-color: var(--pink);
-            box-shadow: 0 0 0 4px rgba(255, 79, 163, 0.2);
-        }
+.todo-form button{
+    border:none;
+    padding:14px 24px;
+    border-radius:15px;
+    cursor:pointer;
+    background:white;
+    color:#6b46c1;
+    font-weight:600;
+    transition:.3s;
+}
 
-        button {
-            padding: 14px 22px;
-            border: none;
-            background: var(--grad);
-            color: #fff;
-            border-radius: 14px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            box-shadow: 0 8px 22px rgba(255, 79, 163, 0.35);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
+.todo-form button:hover{
+    transform:translateY(-3px);
+}
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(255, 79, 163, 0.5);
-        }
+.todo-list{
+    max-height:450px;
+    overflow-y:auto;
+}
 
-        button:active {
-            transform: translateY(0);
-        }
+.todo-item{
+    background:white;
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:.3s;
+}
 
-        button:focus-visible {
-            outline: 3px solid #fff;
-            outline-offset: 3px;
-        }
+.todo-item:hover{
+    transform:translateY(-2px);
+}
 
-        ul {
-            list-style: none;
-        }
+.todo-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
 
-        li {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--glass-border);
-            padding: 16px 18px;
-            margin-bottom: 12px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            transition: transform 0.25s, background 0.25s, border-color 0.25s;
-        }
+.todo-checkbox{
+    width:22px;
+    height:22px;
+    cursor:pointer;
+}
 
-        li:hover {
-            transform: translateX(6px);
-            background: rgba(255, 255, 255, 0.11);
-            border-color: rgba(255, 79, 163, 0.5);
-        }
+.todo-number{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#667eea;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    font-weight:600;
+}
 
-        .task-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 38px;
-            height: 38px;
-            margin-right: 14px;
-            border-radius: 12px;
-            background: var(--grad);
-            color: #fff;
-            font-size: 0.85rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
+.todo-text{
+    font-weight:500;
+    color:#333;
+}
 
-        .task-text {
-            word-break: break-word;
-            line-height: 1.4;
-        }
+.completed{
+    text-decoration:line-through;
+    color:#888;
+    opacity:.7;
+}
 
-        .empty {
-            text-align: center;
-            color: var(--muted);
-            padding: 28px 12px;
-            border: 1px dashed var(--glass-border);
-            border-radius: 16px;
-        }
+.status{
+    font-size:14px;
+    font-weight:600;
+}
 
-        .footer {
-            position: relative;
-            z-index: 1;
-            margin-top: 26px;
-            color: var(--muted);
-            font-size: 0.9rem;
-            text-align: center;
-        }
+.pending{
+    color:#f59e0b;
+}
 
-        @media (prefers-reduced-motion: reduce) {
-            body::before,
-            body::after {
-                animation: none;
-            }
-            li, button {
-                transition: none;
-            }
-        }
+.done{
+    color:#10b981;
+}
 
-        @media (max-width: 420px) {
-            .container { padding: 28px 20px; }
-            form { flex-direction: column; }
-        }
-    </style>
+.empty{
+    text-align:center;
+    color:white;
+    padding:40px;
+}
+
+.footer{
+    margin-top:20px;
+    text-align:center;
+    color:rgba(255,255,255,.8);
+}
+
+@media(max-width:600px){
+
+    .stats{
+        flex-direction:column;
+    }
+
+    .todo-form{
+        flex-direction:column;
+    }
+
+    .todo-item{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+}
+
+</style>
 </head>
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>📝 My Todo List</h1>
+    <div class="header">
+        <h1>🚀 Smart Todo App(batao krna kya kya hai )</h1>
+       
+      <p>Stay organized. Stay productive.</p>
+    </div>
 
-        <form action="/add" method="POST">
-            <input
-                type="text"
-                name="task"
-                placeholder="What needs doing?"
-                required>
-            <button type="submit">➕ Add</button>
-        </form>
+    <div class="stats">
 
-        <% if (todos.length === 0) { %>
-            <div class="empty">
-                No tasks yet. Add your first one above 🚀
+        <div class="card">
+            <h3><%= todos.length %></h3>
+            <p>Total Tasks</p>
+        </div>
+
+        <div class="card">
+            <h3><%= todos.filter(t => t.completed).length %></h3>
+            <p>Completed</p>
+        </div>
+
+        <div class="card">
+            <h3><%= todos.filter(t => !t.completed).length %></h3>
+            <p>Pending</p>
+        </div>
+
+    </div>
+
+    <form class="todo-form" action="/add" method="POST">
+        <input
+            type="text"
+            name="task"
+            placeholder="What needs to be done today?"
+            required>
+
+        <button type="submit">
+            ➕ Add Task
+        </button>
+    </form>
+
+    <% if(todos.length === 0){ %>
+
+        <div class="empty">
+            <h2>📭 No Tasks Yet</h2>
+            <p>Add your first task and start being productive.</p>
+        </div>
+
+    <% } %>
+
+    <div class="todo-list">
+
+        <% todos.forEach(function(todo,index){ %>
+
+            <div class="todo-item">
+
+                <div class="todo-left">
+
+                    <form action="/toggle/<%= index %>" method="POST">
+
+                        <input
+                            class="todo-checkbox"
+                            type="checkbox"
+                            onchange="this.form.submit()"
+                            <%= todo.completed ? 'checked' : '' %>
+                        >
+
+                    </form>
+
+                    <div class="todo-number">
+                        <%= index + 1 %>
+                    </div>
+
+                    <div class="todo-text <%= todo.completed ? 'completed' : '' %>">
+                        <%= todo.text %>
+                    </div>
+
+                </div>
+
+                <div class="status <%= todo.completed ? 'done' : 'pending' %>">
+
+                    <%= todo.completed ? '✅ Completed' : '⏳ Pending' %>
+
+                </div>
+
             </div>
-        <% } %>
 
-        <ul>
-            <% todos.forEach(function(todo, index) { %>
-                <li>
-                    <span class="task-number">#<%= index + 1 %></span>
-                    <span class="task-text"><%= todo %></span>
-                </li>
-            <% }) %>
-        </ul>
+        <% }) %>
 
     </div>
 
     <div class="footer">
-        Made with a lot of you
+        Made with ❤️ 
     </div>
+
+</div>
 
 </body>
 </html>
